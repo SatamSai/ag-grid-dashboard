@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import SummaryCard from "./SummaryCard";
 import { formatter } from "../utils/currencyFormatter";
 import data from '../../assets/data.json'
-// pastel palette
+
 const pastel = {
     blue: "#E0F2FE",
     green: "#DCFCE7",
@@ -14,8 +14,6 @@ const pastel = {
 const SummaryCards = () => {
     const employees = data.employees;
 
-
-    // Calculate summary metrics
     const {
         totalEmployees,
         activeEmployees,

@@ -4,13 +4,13 @@ import { type FunctionComponent } from "react";
 
 function getRandomColor() {
     const colors = [
-        "#DCFCE7", // light green
-        "#E0F2FE", // light blue
-        "#FEF9C3", // light yellow
-        "#FCE7F3", // light pink
-        "#EDE9FE", // light purple
-        "#FFE4E6", // light red
-        "#F3E8FF", // light violet
+        "#DCFCE7",
+        "#E0F2FE",
+        "#FEF9C3",
+        "#FCE7F3",
+        "#EDE9FE",
+        "#FFE4E6",
+        "#F3E8FF",
     ];
     return colors[Math.floor(Math.random() * colors.length)];
 }

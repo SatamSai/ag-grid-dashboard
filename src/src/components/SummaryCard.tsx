@@ -1,4 +1,3 @@
-import React from "react";
 
 const SummaryCard = ({
     title,
@@ -8,8 +7,8 @@ const SummaryCard = ({
 }: {
     title: string;
     value: string | number;
-    color: string;     // one of your pastel hexes
-    subtitle?: string; // optional small text
+    color: string;
+    subtitle?: string;
 }) => {
     return (
         <div

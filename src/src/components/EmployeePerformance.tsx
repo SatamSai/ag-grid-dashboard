@@ -1,75 +1,44 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import type { TEmployee, TEmployeeRaw } from '../types';
+import type { ColDef } from 'ag-grid-community';
 import { EmployeeCellRenderer } from './EmployeeCell';
-import data from '../../assets/data.json'
-import { SkillCell } from './SkillCellRenderer';
-import { formatter } from '../utils/currencyFormatter';
-import { StatusCell } from './StatusCell';
 import { RatingCell } from './RatingCell';
-
-const TOGGLE_OPTIONS = [
-    { key: 'all', label: 'All' },
-    { key: 'active', label: 'Active' },
-    { key: 'inactive', label: 'Inactive' },
-] as const;
-
-type ToggleKey = (typeof TOGGLE_OPTIONS)[number]['key'];
+import data from '../../assets/data.json';
 
 const paginationPageSizeSelector = [5, 10, 20];
-
-const commonCellStyles = {
+const commonCellStyles: React.CSSProperties = {
     display: "flex",
     alignItems: "center",
     height: "100%",
-}
-
+};
 
 function EmployeePerformanceTable() {
-
-    const [colDefs, setColDefs] = useState([
+    const [colDefs] = useState<ColDef[]>([
         {
             field: "firstName",
             filter: true,
-            cellRenderer: EmployeeCellRenderer,
+            cellRenderer: EmployeeCellRenderer as any,
             autoHeight: true,
             wrapText: true,
         },
-        {
-            field: "department",
-            cellStyle: { ...commonCellStyles },
-        },
-        {
-            field: "projectsCompleted",
-            cellStyle: { ...commonCellStyles },
-        },
-        {
-            field: "performanceRating",
-            cellStyle: { ...commonCellStyles },
-            cellRenderer: RatingCell,
-        }
+        { field: "department", cellStyle: { ...commonCellStyles } },
+        { field: "projectsCompleted", cellStyle: { ...commonCellStyles } },
+        { field: "performanceRating", cellStyle: { ...commonCellStyles }, cellRenderer: RatingCell as any },
     ]);
 
-    const gridRef = useRef<AgGridReact>(null)
+    const gridRef = useRef<AgGridReact>(null);
 
-    const getDataPath = useCallback((data: TEmployee) => data.heirarchy, []);
+    const autoSizeStrategy = useMemo(() => ({
+        type: 'fitGridWidth' as const,
+        defaultMinWidth: 150,
+    }), []);
 
-    const autoSizeStrategy = useMemo(() => {
-        return {
-            type: 'fitGridWidth',
-            defaultMinWidth: 150,
-        };
-    }, []);
-
-    const defaultColDef = useMemo(
-        () => ({
-            flex: 1,
-            filter: true,
-            enableRowGroup: true,
-            enableValue: true,
-        }),
-        []
-    );
+    const defaultColDef = useMemo<ColDef>(() => ({
+        flex: 1,
+        filter: true,
+        enableRowGroup: true,
+        enableValue: true,
+    }), []);
 
     return (
         <div className='bg-white'>
@@ -81,10 +50,9 @@ function EmployeePerformanceTable() {
             </p>
 
             <AgGridReact
-                rowData={data.employees}
+                rowData={(data as any).employees}
                 defaultColDef={defaultColDef}
                 columnDefs={colDefs}
-                getDataPath={getDataPath}
                 ref={gridRef}
                 autoSizeStrategy={autoSizeStrategy}
                 rowGroupPanelShow='always'
@@ -93,9 +61,8 @@ function EmployeePerformanceTable() {
                 paginationPageSizeSelector={paginationPageSizeSelector}
                 domLayout="autoHeight"
             />
-
         </div>
-    )
+    );
 }
 
-export default EmployeePerformanceTable
+export default EmployeePerformanceTable;
